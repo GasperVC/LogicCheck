@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas IoT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .test-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .test-card:hover {
+            transform: scale(1.05);
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pruebas IoT</h1>
+    <div class="container">
+        <!-- Generación de 12 pruebas -->
+        <!-- Cada prueba puede tener su propio id o descripción -->
+        <div class="test-card">
+            <h2>Prueba 1</h2>
+            <p>Descripción de la prueba 1</p>
+            <button onclick="accionPrueba(1)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 2</h2>
+            <p>Descripción de la prueba 2</p>
+            <button onclick="accionPrueba(2)">Ejecutar Prueba</button>
+        </div>
+        <!-- Repite este bloque para las demás pruebas -->
+        <!-- Pruebas 3 a 12 -->
+        <div class="test-card">
+            <h2>Prueba 3</h2>
+            <p>Descripción de la prueba 3</p>
+            <button onclick="accionPrueba(3)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 4</h2>
+            <p>Descripción de la prueba 4</p>
+            <button onclick="accionPrueba(4)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 5</h2>
+            <p>Descripción de la prueba 5</p>
+            <button onclick="accionPrueba(5)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 6</h2>
+            <p>Descripción de la prueba 6</p>
+            <button onclick="accionPrueba(6)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 7</h2>
+            <p>Descripción de la prueba 7</p>
+            <button onclick="accionPrueba(7)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 8</h2>
+            <p>Descripción de la prueba 8</p>
+            <button onclick="accionPrueba(8)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 9</h2>
+            <p>Descripción de la prueba 9</p>
+            <button onclick="accionPrueba(9)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 10</h2>
+            <p>Descripción de la prueba 10</p>
+            <button onclick="accionPrueba(10)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 11</h2>
+            <p>Descripción de la prueba 11</p>
+            <button onclick="accionPrueba(11)">Ejecutar Prueba</button>
+        </div>
+        <div class="test-card">
+            <h2>Prueba 12</h2>
+            <p>Descripción de la prueba 12</p>
+            <button onclick="accionPrueba(12)">Ejecutar Prueba</button>
+        </div>
+    </div>
+
+    <script>
+        function accionPrueba(numeroPrueba) {
+            alert(`Ejecutando la prueba ${numeroPrueba}`);
+            // Aquí puedes añadir la lógica para realizar la acción correspondiente
+        }
+    </script>
+</body>
+</html>
