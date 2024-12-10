@@ -225,29 +225,40 @@
         const testHeader = document.getElementById('test-header');
         const testDescription = document.getElementById('test-description');
         const monitorSection = document.getElementById('monitor-section');
-
+    
+        // Variable global para almacenar el número de prueba seleccionado
+        let selectedTestNumber = null;
+    
         function scrollIzquierda() {
             const cardWidth = 220;
             scrollPosition = Math.max(scrollPosition - cardWidth, 0);
             scrollContent.style.transform = `translateX(-${scrollPosition}px)`;
         }
-
+    
         function scrollRight() {
             const cardWidth = 220;
             const maxScroll = scrollContent.scrollWidth - scrollContent.parentElement.clientWidth;
             scrollPosition = Math.min(scrollPosition + cardWidth, maxScroll);
             scrollContent.style.transform = `translateX(-${scrollPosition}px)`;
         }
-
+    
         function selectTest(testNumber) {
+            // Actualizar la variable global
+            selectedTestNumber = testNumber;
+    
+            // Mostrar detalles de la prueba
             testDetails.style.display = 'block';
             testHeader.textContent = `Prueba ${testNumber}`;
             testDescription.textContent = `Descripción detallada de la prueba ${testNumber}.`;
             monitorSection.innerHTML = '<p>Monitor serial de pruebas:</p>';
         }
-
+    
         function executeTest() {
-            monitorSection.innerHTML += `<p>Ejecutando prueba...</p>`;
+            if (selectedTestNumber === null) {
+                alert('Por favor selecciona una prueba antes de ejecutarla.');
+                return;
+            }
+            monitorSection.innerHTML += `<p>Ejecutando prueba ${selectedTestNumber}...</p>`;
             const isSuccess = Math.random() > 0.3;
             if (isSuccess) {
                 document.getElementById('status-ok').style.backgroundColor = 'green';
@@ -258,6 +269,7 @@
             }
         }
     </script>
+    
 </body>
 
 </html>
