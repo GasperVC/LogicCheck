@@ -1,117 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pruebas IoT</title>
+    <title>CheckLogic</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        h1 {
             text-align: center;
         }
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px;
         }
-        .test-card {
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .scroll-bar {
+            display: flex;
+            align-items: center;
+            width: 80%;
+            overflow: hidden;
             border: 1px solid #ccc;
             border-radius: 8px;
-            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-content {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .test-card {
+            flex: 0 0 200px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
+            cursor: pointer;
         }
+
         .test-card:hover {
             transform: scale(1.05);
         }
+
         button {
             background-color: #007BFF;
             color: white;
             border: none;
             padding: 10px 20px;
+            margin: 0 10px;
             cursor: pointer;
             border-radius: 4px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
+        .test-details {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+        }
+
+        .test-header {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .test-description {
+            margin-bottom: 20px;
+        }
+
+        .test-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .status-section,
+        .monitor-section {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .status-section {
+            text-align: center;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 80px;
+            height: 40px;
+            line-height: 40px;
+            margin: 10px;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .ok {
+            background-color: green;
+        }
+
+        .error {
+            background-color: red;
+        }
+
+        .monitor-section {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            margin-bottom: 0px;
+        }
+
+        .monitor-section p {
+            margin: 0px;
+        }
+
+        .execute-button {
+            margin-top: 10px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .execute-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
+
 <body>
     <h1>Pruebas IoT</h1>
     <div class="container">
-        <!-- Generación de 12 pruebas -->
-        <!-- Cada prueba puede tener su propio id o descripción -->
-        <div class="test-card">
-            <h2>Prueba 1</h2>
-            <p>Descripción de la prueba 1</p>
-            <button onclick="accionPrueba(1)">Ejecutar Prueba</button>
+        <button onclick="scrollIzquierda()">⬅</button>
+        <div class="scroll-bar">
+            <div id="scroll-content" class="scroll-content">
+                <!-- Pruebas -->
+                <div class="test-card" onclick="selectTest(1)">
+                    <h2>74HC08</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(2)">
+                    <h2>74HC32</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(3)">
+                    <h2>74HC00</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(4)">
+                    <h2>74HC86</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(5)">
+                    <h2>74HC02</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(6)">
+                    <h2>74HC04</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(7)">
+                    <h2>74HC10</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(8)">
+                    <h2>74HC11</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(9)">
+                    <h2>74HC27</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(10)">
+                    <h2>74HC20</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(11)">
+                    <h2>74HC21</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(12)">
+                    <h2>74LS75</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(13)">
+                    <h2>74LS48</h2>
+                </div>
+                <div class="test-card" onclick="selectTest(14)">
+                    <h2>FATLA...</h2>
+                </div>
+            </div>
         </div>
-        <div class="test-card">
-            <h2>Prueba 2</h2>
-            <p>Descripción de la prueba 2</p>
-            <button onclick="accionPrueba(2)">Ejecutar Prueba</button>
+        <button onclick="scrollRight()">➡</button>
+    </div>
+
+    <div id="test-details" class="test-details">
+        <div class="test-header" id="test-header">Prueba 1</div>
+        <div class="test-description" id="test-description">
+            Descripción detallada de la prueba seleccionada.
         </div>
-        <!-- Repite este bloque para las demás pruebas -->
-        <!-- Pruebas 3 a 12 -->
-        <div class="test-card">
-            <h2>Prueba 3</h2>
-            <p>Descripción de la prueba 3</p>
-            <button onclick="accionPrueba(3)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 4</h2>
-            <p>Descripción de la prueba 4</p>
-            <button onclick="accionPrueba(4)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 5</h2>
-            <p>Descripción de la prueba 5</p>
-            <button onclick="accionPrueba(5)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 6</h2>
-            <p>Descripción de la prueba 6</p>
-            <button onclick="accionPrueba(6)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 7</h2>
-            <p>Descripción de la prueba 7</p>
-            <button onclick="accionPrueba(7)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 8</h2>
-            <p>Descripción de la prueba 8</p>
-            <button onclick="accionPrueba(8)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 9</h2>
-            <p>Descripción de la prueba 9</p>
-            <button onclick="accionPrueba(9)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 10</h2>
-            <p>Descripción de la prueba 10</p>
-            <button onclick="accionPrueba(10)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 11</h2>
-            <p>Descripción de la prueba 11</p>
-            <button onclick="accionPrueba(11)">Ejecutar Prueba</button>
-        </div>
-        <div class="test-card">
-            <h2>Prueba 12</h2>
-            <p>Descripción de la prueba 12</p>
-            <button onclick="accionPrueba(12)">Ejecutar Prueba</button>
+        <div class="test-actions">
+            <div class="status-section">
+                <div id="status-ok" class="status-indicator ok">OK</div>
+                <div id="status-error" class="status-indicator error">ERROR</div>
+                <button class="execute-button" onclick="executeTest()">Ejecutar</button>
+            </div>
+            <div class="monitor-section" id="monitor-section">
+                <p>Monitor serial de pruebas:</p>
+            </div>
         </div>
     </div>
 
     <script>
-        function accionPrueba(numeroPrueba) {
-            alert(`Ejecutando la prueba ${numeroPrueba}`);
-            // Aquí puedes añadir la lógica para realizar la acción correspondiente
+        const scrollContent = document.getElementById('scroll-content');
+        let scrollPosition = 0;
+        const testDetails = document.getElementById('test-details');
+        const testHeader = document.getElementById('test-header');
+        const testDescription = document.getElementById('test-description');
+        const monitorSection = document.getElementById('monitor-section');
+
+        function scrollIzquierda() {
+            const cardWidth = 220;
+            scrollPosition = Math.max(scrollPosition - cardWidth, 0);
+            scrollContent.style.transform = `translateX(-${scrollPosition}px)`;
+        }
+
+        function scrollRight() {
+            const cardWidth = 220;
+            const maxScroll = scrollContent.scrollWidth - scrollContent.parentElement.clientWidth;
+            scrollPosition = Math.min(scrollPosition + cardWidth, maxScroll);
+            scrollContent.style.transform = `translateX(-${scrollPosition}px)`;
+        }
+
+        function selectTest(testNumber) {
+            testDetails.style.display = 'block';
+            testHeader.textContent = `Prueba ${testNumber}`;
+            testDescription.textContent = `Descripción detallada de la prueba ${testNumber}.`;
+            monitorSection.innerHTML = '<p>Monitor serial de pruebas:</p>';
+        }
+
+        function executeTest() {
+            monitorSection.innerHTML += `<p>Ejecutando prueba...</p>`;
+            const isSuccess = Math.random() > 0.3;
+            if (isSuccess) {
+                document.getElementById('status-ok').style.backgroundColor = 'green';
+                document.getElementById('status-error').style.backgroundColor = '#ccc';
+            } else {
+                document.getElementById('status-ok').style.backgroundColor = '#ccc';
+                document.getElementById('status-error').style.backgroundColor = 'red';
+            }
         }
     </script>
 </body>
+
 </html>
