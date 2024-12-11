@@ -82,7 +82,7 @@ bool pruebasBiTrLatch(int pinEn, int pinD, int pinQ, int pinQn) {
 
     lastD = statesD[i];
     lastEn = statesEn[i];
-    
+
     lastQ = expectedQ;
     lastQn = expectedQn;
 
@@ -93,11 +93,11 @@ bool pruebasBiTrLatch(int pinEn, int pinD, int pinQ, int pinQn) {
 
 // Función para el latch
 void biTriLatchLogic(bool D, bool actualEn, bool &Q, bool &Qn, bool lastQ, bool lastQn, bool lastD, bool lastEn) {
-   if (actualEn) {
+  if (actualEn) {
     if (D != lastD) {
       Q = !lastQ;
       Qn = !lastQn;
-    } 
+    }
     else if ((D == HIGH) && (lastD == HIGH) && (lastQ == LOW) && (lastQn == HIGH) && (actualEn != lastEn)) {
       Q = !lastQ;
       Qn = !lastQn;
@@ -187,22 +187,24 @@ void printResult(const char* message, bool resultado) {
   Serial.print(message);
   if (resultado) {
     Serial.println("\tOK");
+    ws.textAll(String(message) + "   OK");
   } else {
     Serial.println("\tERROR");
+    ws.textAll(String(message) + "   ERROR");
   }
 }
 
 // Ejecuta pruebas con una función lógica dada para 4 entradas, NO SE MODIFICA
 bool checkLogicGate4Bits(int pinA, int pinB, int pinC, int pinD, int pinSalida, bool (*logicOperation)(int, int, int, int)) {
-	const char* messages4bits[] = {
-		"A = 1, B = 1, C = 1, D = 1",
-		"A = 0, B = 1, C = 1, D = 1",
-		"A = 1, B = 0, C = 1, D = 1",
-		"A = 0, B = 0, C = 1, D = 1",
-		"A = 1, B = 1, C = 0, D = 1",
-		"A = 0, B = 1, C = 0, D = 1",
-		"A = 1, B = 0, C = 0, D = 1",
-		"A = 0, B = 0, C = 0, D = 1",
+  const char* messages4bits[] = {
+    "A = 1, B = 1, C = 1, D = 1",
+    "A = 0, B = 1, C = 1, D = 1",
+    "A = 1, B = 0, C = 1, D = 1",
+    "A = 0, B = 0, C = 1, D = 1",
+    "A = 1, B = 1, C = 0, D = 1",
+    "A = 0, B = 1, C = 0, D = 1",
+    "A = 1, B = 0, C = 0, D = 1",
+    "A = 0, B = 0, C = 0, D = 1",
     "A = 1, B = 1, C = 1, D = 0",
     "A = 0, B = 1, C = 1, D = 0",
     "A = 1, B = 0, C = 1, D = 0",
@@ -211,11 +213,11 @@ bool checkLogicGate4Bits(int pinA, int pinB, int pinC, int pinD, int pinSalida, 
     "A = 0, B = 1, C = 0, D = 0",
     "A = 1, B = 0, C = 0, D = 0",
     "A = 0, B = 0, C = 0, D = 0"
-	};
+  };
 
-	int statesA4bits[] = {HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW};
-	int statesB4bits[] = {HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW};
-	int statesC4bits[] = {HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW};
+  int statesA4bits[] = {HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW};
+  int statesB4bits[] = {HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW};
+  int statesC4bits[] = {HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW};
   int statesD4bits[] = {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW};
 
   bool resultado = true;
@@ -237,20 +239,20 @@ bool checkLogicGate4Bits(int pinA, int pinB, int pinC, int pinD, int pinSalida, 
 
 // Ejecuta pruebas con una función lógica dada para 3 entradas, NO SE MODIFICA
 bool checkLogicGate3Bits(int pinA, int pinB, int pinC, int pinSalida, bool (*logicOperation)(int, int, int)) {
-	const char* messages3bits[] = {
-		"A = 1, B = 1, C = 1",
-		"A = 0, B = 1, C = 1",
-		"A = 1, B = 0, C = 1",
-		"A = 0, B = 0, C = 1",
-		"A = 1, B = 1, C = 0",
-		"A = 0, B = 1, C = 0",
-		"A = 1, B = 0, C = 0",
-		"A = 0, B = 0, C = 0"
-	};
+  const char* messages3bits[] = {
+    "A = 1, B = 1, C = 1",
+    "A = 0, B = 1, C = 1",
+    "A = 1, B = 0, C = 1",
+    "A = 0, B = 0, C = 1",
+    "A = 1, B = 1, C = 0",
+    "A = 0, B = 1, C = 0",
+    "A = 1, B = 0, C = 0",
+    "A = 0, B = 0, C = 0"
+  };
 
-	int statesA3bits[] = {HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW};
-	int statesB3bits[] = {HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW};
-	int statesC3bits[] = {HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW};
+  int statesA3bits[] = {HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW};
+  int statesB3bits[] = {HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW};
+  int statesC3bits[] = {HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW};
 
   bool resultado = true;
 
@@ -271,15 +273,15 @@ bool checkLogicGate3Bits(int pinA, int pinB, int pinC, int pinSalida, bool (*log
 
 // Ejecuta pruebas con una función lógica dada para 2 entradas, NO SE MODIFICA
 bool checkLogicGate2Bits(int pinA, int pinB, int pinSalida, bool (*logicOperation)(int, int)) {
-	const char* messages2bits[] = {
-  	"A = 1, B = 1",
-  	"A = 0, B = 1",
-  	"A = 1, B = 0",
-  	"A = 0, B = 0"
-	};
+  const char* messages2bits[] = {
+    "A = 1, B = 1",
+    "A = 0, B = 1",
+    "A = 1, B = 0",
+    "A = 0, B = 0"
+  };
 
-	int statesA2bits[] = {HIGH, LOW, HIGH, LOW};
-	int statesB2bits[] = {HIGH, HIGH, LOW, LOW};
+  int statesA2bits[] = {HIGH, LOW, HIGH, LOW};
+  int statesB2bits[] = {HIGH, HIGH, LOW, LOW};
 
   bool resultado = true;
 
@@ -299,12 +301,12 @@ bool checkLogicGate2Bits(int pinA, int pinB, int pinSalida, bool (*logicOperatio
 
 // Ejecuta pruebas con una función lógica dada para 1 entrada, NO SE MODIFICA
 bool checkLogicGate1Bit(int pinA, int pinSalida, bool (*logicOperation)(int)) {
-	const char* messages1bit[] = {
-  	"A = 1",
-  	"A = 0"
-	};
+  const char* messages1bit[] = {
+    "A = 1",
+    "A = 0"
+  };
 
-	int statesA1bit[] = {HIGH, LOW};
+  int statesA1bit[] = {HIGH, LOW};
 
   bool resultado = true;
 
@@ -324,26 +326,26 @@ bool checkLogicGate1Bit(int pinA, int pinSalida, bool (*logicOperation)(int)) {
 bool pruebasDoble(int pinA1, int pinB1, int pinC1, int pinD1, int pinSalida1,
                   int pinA2, int pinB2, int pinC2, int pinD2, int pinSalida2,
                   bool (*testFunc)(int, int, int, int)) {
-    return checkLogicGate4Bits(pinA1, pinB1, pinC1, pinD1, pinSalida1, testFunc) &&
-           checkLogicGate4Bits(pinA2, pinB2, pinC2, pinD2, pinSalida2, testFunc);
+  return checkLogicGate4Bits(pinA1, pinB1, pinC1, pinD1, pinSalida1, testFunc) &&
+         checkLogicGate4Bits(pinA2, pinB2, pinC2, pinD2, pinSalida2, testFunc);
 }
 bool pruebasTriple(int pinA1, int pinB1, int pinC1, int pinSalida1,
                    int pinA2, int pinB2, int pinC2, int pinSalida2,
                    int pinA3, int pinB3, int pinC3, int pinSalida3,
                    bool (*testFunc)(int, int, int)) {
-    return checkLogicGate3Bits(pinA1, pinB1, pinC1, pinSalida1, testFunc) &&
-           checkLogicGate3Bits(pinA2, pinB2, pinC2, pinSalida2, testFunc) &&
-           checkLogicGate3Bits(pinA3, pinB3, pinC3, pinSalida3, testFunc);
+  return checkLogicGate3Bits(pinA1, pinB1, pinC1, pinSalida1, testFunc) &&
+         checkLogicGate3Bits(pinA2, pinB2, pinC2, pinSalida2, testFunc) &&
+         checkLogicGate3Bits(pinA3, pinB3, pinC3, pinSalida3, testFunc);
 }
 bool pruebasCuadriple(int pinA1, int pinB1, int pinSalida1,
                       int pinA2, int pinB2, int pinSalida2,
                       int pinA3, int pinB3, int pinSalida3,
                       int pinA4, int pinB4, int pinSalida4,
                       bool (*testFunc)(int, int)) {
-    return checkLogicGate2Bits(pinA1, pinB1, pinSalida1, testFunc) &&
-           checkLogicGate2Bits(pinA2, pinB2, pinSalida2, testFunc) &&
-           checkLogicGate2Bits(pinA3, pinB3, pinSalida3, testFunc) &&
-           checkLogicGate2Bits(pinA4, pinB4, pinSalida4, testFunc);
+  return checkLogicGate2Bits(pinA1, pinB1, pinSalida1, testFunc) &&
+         checkLogicGate2Bits(pinA2, pinB2, pinSalida2, testFunc) &&
+         checkLogicGate2Bits(pinA3, pinB3, pinSalida3, testFunc) &&
+         checkLogicGate2Bits(pinA4, pinB4, pinSalida4, testFunc);
 }
 bool pruebasSixtuple(int pinA1, int pinSalida1,
                      int pinA2, int pinSalida2,
@@ -352,12 +354,12 @@ bool pruebasSixtuple(int pinA1, int pinSalida1,
                      int pinA5, int pinSalida5,
                      int pinA6, int pinSalida6,
                      bool (*testFunc)(int)) {
-    return checkLogicGate1Bit(pinA1, pinSalida1, testFunc) &&
-           checkLogicGate1Bit(pinA2, pinSalida2, testFunc) &&
-           checkLogicGate1Bit(pinA3, pinSalida3, testFunc) &&
-           checkLogicGate1Bit(pinA4, pinSalida4, testFunc) &&
-           checkLogicGate1Bit(pinA5, pinSalida5, testFunc) &&
-           checkLogicGate1Bit(pinA6, pinSalida6, testFunc);
+  return checkLogicGate1Bit(pinA1, pinSalida1, testFunc) &&
+         checkLogicGate1Bit(pinA2, pinSalida2, testFunc) &&
+         checkLogicGate1Bit(pinA3, pinSalida3, testFunc) &&
+         checkLogicGate1Bit(pinA4, pinSalida4, testFunc) &&
+         checkLogicGate1Bit(pinA5, pinSalida5, testFunc) &&
+         checkLogicGate1Bit(pinA6, pinSalida6, testFunc);
 }
 
 // Función para realizar el test actual
@@ -412,29 +414,29 @@ void realizarTest(int test) {
         Serial.print("NAND 3: ERROR"); ws.textAll("NAND 3: ERROR");
       }
       break;
-		case 7: // AND triple
+    case 7: // AND triple
       if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], andLogic3Bits)) {
         Serial.print("AND 3: OK"); ws.textAll("AND 3: OK");
       } else {
         Serial.print("AND 3: ERROR"); ws.textAll("AND 3: ERROR");
       }
       break;
-		case 8: // NOR triple
-      if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], norLogic3Bits)){
+    case 8: // NOR triple
+      if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], norLogic3Bits)) {
         Serial.print("NOR 3: OK"); ws.textAll("NOR 2: OK");
       } else {
         Serial.print("NOR 3: ERROR"); ws.textAll("NOR 2: ERROR");
       }
       break;
     case 9: // NAND Doble
-      if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], nandLogic4Bits)){
+      if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], nandLogic4Bits)) {
         Serial.print("NAND 2: OK"); ws.textAll("NAND 2: OK");
       } else {
         Serial.print("NAND 2: ERROR"); ws.textAll("NAND 2: ERROR");
       }
       break;
-		case 10: // AND Doble
-      if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], andLogic4Bits)){
+    case 10: // AND Doble
+      if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], andLogic4Bits)) {
         Serial.print("AND 2: OK"); ws.textAll("AND 2: OK");
       } else {
         Serial.print("AND 2: ERROR"); ws.textAll("AND 2: ERROR");
@@ -459,8 +461,8 @@ void realizarTest(int test) {
 
 // Función que realiza una serie de acciones y va enviando resultados al navegador
 void ejecutarAcciones(int currentTest) {
-  configurarPines(currentTest-1); // Reconfigurar los pines según el test
-  realizarTest(currentTest-1);
+  configurarPines(currentTest - 1); // Reconfigurar los pines según el test
+  realizarTest(currentTest - 1);
 }
 
 void setup() {
@@ -487,7 +489,7 @@ void setup() {
   }
 
   // Configura el manejador de WebSocket
-  ws.onEvent([](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+  ws.onEvent([](AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
     if (type == WS_EVT_CONNECT) {
       Serial.println("Cliente conectado.");
     } else if (type == WS_EVT_DISCONNECT) {
@@ -497,7 +499,7 @@ void setup() {
   server.addHandler(&ws);
 
   // Página web con un botón y un div para mostrar resultados
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
     String html = R"rawliteral(
       <!DOCTYPE html>
       <html>
@@ -675,11 +677,6 @@ void setup() {
                 </div>
             </div>
         </div>
-        <h1>Ejecutar Acciones en Tiempo Real</h1>
-        <button onclick="ejecutarAcciones()">Ejecutar Acciones</button>
-        <div id="contenido" class="resultados">
-          <p>Esperando resultados...</p>
-        </div>
 
         <script>
           const scrollContent = document.getElementById('scroll-content');
@@ -731,6 +728,26 @@ void setup() {
                 monitorSection.innerHTML += `<p style="color:red;">Error: ${error.message}</p>`;
               });
           }
+          
+          const websocket = new WebSocket(`ws://${window.location.host}/ws`);
+          websocket.onmessage = function(event) {
+            // Añadir el mensaje recibido al monitor
+            monitorSection.innerHTML += '<p>' + event.data + '</p>';
+            monitorSection.scrollTop = monitorSection.scrollHeight; // Mantener el scroll al último mensaje
+        
+            // Analizar el mensaje para verificar si contiene "ERROR"
+            if (event.data.includes('ERROR')) {
+                // Mostrar el mensaje de error y cambiar los colores de estado
+                //monitorSection.innerHTML += `<p>Prueba fallida.</p>`;
+                document.getElementById('status-ok').style.backgroundColor = '#ccc';
+                document.getElementById('status-error').style.backgroundColor = 'red';
+            } else {
+              // Mostrar el mensaje de éxito y cambiar los colores de estado
+              //monitorSection.innerHTML += `<p>Prueba completada con éxito.</p>`;
+              document.getElementById('status-ok').style.backgroundColor = 'green';
+              document.getElementById('status-error').style.backgroundColor = '#ccc';
+            }
+          };
         </script>
 
       </body>
@@ -740,13 +757,13 @@ void setup() {
   });
 
   // Ruta que ejecuta las acciones
-  server.on("/ejecutar", HTTP_GET, [](AsyncWebServerRequest *request) {
+  server.on("/ejecutar", HTTP_GET, [](AsyncWebServerRequest * request) {
     if (request->hasParam("parametro")) {
       String parametroStr = request->getParam("parametro")->value();
       int parametroInt = parametroStr.toInt();
       if (parametroInt >= 0) { // Validar que el parámetro es válido
-        ejecutarAcciones(parametroInt);
         request->send(200, "text/plain", "Acciones iniciadas con el parámetro: " + String(parametroInt));
+        ejecutarAcciones(parametroInt);
       } else {
         request->send(400, "text/plain", "Parámetro inválido.");
       }
