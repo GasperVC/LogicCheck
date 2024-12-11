@@ -1,13 +1,14 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncTCP.h>
-
-const int pins[] = {
-  25, 26, 27, 22, 21, 19, 18, 5, 17, 16, 4, 2, 15, 13
-};
-const int numTests = 12; // Número de pruebas (AND, OR, etc.)
+                  // 0,  1,  2,  3,  4,  5,  6,  7, 8,  9,  10,11,12, 13  // posicion de pins
+const int pins[] = { 25, 26, 27, 22, 21, 19, 18, 5, 17, 16, 4, 2, 15, 13 };
+                  // 1,  2,  3,  4,  5,  6,  8,  9, 10, 11, 12,13         // posicion de 14 pines
+                  // 2,  3,  4,  6,  7,  8,  9,  10,11, 13, 14,15,16, 1   // posicion de 16 pines 74LS75
+                  // 2,  3,  4,  5,  6,  7,  9,  10,11, 12, 13,14,15, 1   // posicion de 16 pines 74LS48
+const int numTests = 15; // Número de pruebas (AND, OR, etc.)
 // int currentTest = 0;    // Índice del test actual (0 para AND, 1 para OR, etc.)
-const char* testNames[numTests] = {"74HC08", "74HC32", "74HC00", "74HC86", "74HC02", "74HC04", "74HC10", "74HC11", "74HC27", "74HC20", "74HC21", "74LS75"};
+const char* testNames[numTests] = {"74HC08", "74HC32", "74HC00", "74HC86", "74HC02", "74HC04", "74HC10", "74HC11", "74HC27", "74HC20", "74HC21", "74LS75", "74HC4075", "74HC4072", "74LS48"};
 
 // Configura el nombre y la contraseña de tu red WiFi
 const char* ssid = "###";
@@ -21,38 +22,34 @@ AsyncWebSocket ws("/ws");
 //-----------------------------------
 
 bool andLogic2Bits(int estadoA, int estadoB) {  // Operación lógica AND 2 entradas
-  return estadoA && estadoB;
-}
+  return estadoA && estadoB; }
 bool orLogic2Bits(int estadoA, int estadoB) { // Operación lógica OR 2 entradas
-  return estadoA || estadoB;
-}
+  return estadoA || estadoB; }
 bool nandLogic2Bits(int estadoA, int estadoB) { // Operación lógica NAND 2 entradas
-  return ! (estadoA && estadoB);
-}
+  return ! (estadoA && estadoB); }
 bool xorLogic2Bits(int estadoA, int estadoB) {  // Operación lógica XOR 2 entradas
-  return estadoA ^ estadoB;
-}
+  return estadoA ^ estadoB; }
 bool norLogic2Bits(int estadoA, int estadoB) {  // Operación lógica NOR 2 entradas
-  return ! (estadoA || estadoB);
-}
+  return ! (estadoA || estadoB); }
+
 bool notLogic1Bit(int estadoA) {  // Operación lógica NOT
-  return !estadoA;
-}
+  return !estadoA; }
+
 bool andLogic3Bits(int estadoA, int estadoB, int estadoC) { // Operación lógica AND 3 entradas
-  return estadoA && estadoB && estadoC;
-}
+  return estadoA && estadoB && estadoC; }
+bool orLogic3Bits(int estadoA, int estadoB, int estadoC) {  // Operación lógica OR 3 entradas
+  return estadoA || estadoB || estadoC; }
 bool nandLogic3Bits(int estadoA, int estadoB, int estadoC) {  // Operación lógica NAND 3 entradas
-  return ! (estadoA && estadoB && estadoC);
-}
+  return ! (estadoA && estadoB && estadoC); }
 bool norLogic3Bits(int estadoA, int estadoB, int estadoC) { // Operación lógica NOR 3 entradas
-  return ! (estadoA || estadoB || estadoC);
-}
+  return ! (estadoA || estadoB || estadoC); }
+
 bool andLogic4Bits(int estadoA, int estadoB, int estadoC, int estadoD) {  // Operación lógica AND 4 entradas
-  return estadoA && estadoB && estadoC && estadoD;
-}
+  return estadoA && estadoB && estadoC && estadoD; }
+bool orLogic4Bits(int estadoA, int estadoB, int estadoC, int estadoD) { // Operación lógica OR 4 entradas
+  return estadoA || estadoB || estadoC || estadoD; }
 bool nandLogic4Bits(int estadoA, int estadoB, int estadoC, int estadoD) { // Operación lógica NAND 4 entradas
-  return ! (estadoA && estadoB && estadoC && estadoD);
-}
+  return ! (estadoA && estadoB && estadoC && estadoD); }
 
 // Pruebas específicas para la puerta Biestable Transparent Latch
 bool pruebasBiTrLatch(int pinEn, int pinD, int pinQ, int pinQn) {
@@ -115,6 +112,88 @@ void biTriLatchLogic(bool D, bool actualEn, bool &Q, bool &Qn, bool lastQ, bool 
   }
 }
 
+bool pruebasDeco7Seg(int pinLT, int pinRBI, int pinA0, int pinA1, int pinA2, int pinA3, int pinBIRBO, int pin_a, int pin_b, int pin_c, int pin_d, int pin_e, int pin_f, int pin_g) {
+  const char* inputs4bits[] = {
+    "D = 0, C = 0, B = 0, A = 0",
+    "D = 0, C = 0, B = 0, A = 1",
+    "D = 0, C = 0, B = 1, A = 0",
+    "D = 0, C = 0, B = 1, A = 1",
+    "D = 0, C = 1, B = 0, A = 0",
+    "D = 0, C = 1, B = 0, A = 1",
+    "D = 0, C = 1, B = 1, A = 0",
+    "D = 0, C = 1, B = 1, A = 1",
+    "D = 1, C = 0, B = 0, A = 0",
+    "D = 1, C = 0, B = 0, A = 1",
+    "D = 1, C = 0, B = 1, A = 0",
+    "D = 1, C = 0, B = 1, A = 1",
+    "D = 1, C = 1, B = 0, A = 0",
+    "D = 1, C = 1, B = 0, A = 1",
+    "D = 1, C = 1, B = 1, A = 0",
+    "D = 1, C = 1, B = 1, A = 1"
+  };
+
+  int statesRBI[] = {HIGH, LOW};
+  int statesA0[] = {LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH};
+  int statesA1[] = {LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH};
+  int statesA2[] = {LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH};
+  int statesA3[] = {LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
+
+  const char* outputs4bits[] = {
+    "0: BI/RBO=H, a=H, b=H, c=H, d=H, e=H, f=H, g=L",
+    "1: BI/RBO=H, a=L, b=H, c=H, d=L, e=L, f=L, g=L",
+    "2: BI/RBO=H, a=H, b=H, c=L, d=H, e=H, f=L, g=H",
+    "3: BI/RBO=H, a=H, b=H, c=H, d=H, e=L, f=L, g=H",
+    "4: BI/RBO=H, a=L, b=H, c=H, d=L, e=L, f=H, g=H",
+    "5: BI/RBO=H, a=H, b=L, c=H, d=H, e=L, f=H, g=H",
+    "6: BI/RBO=H, a=L, b=L, c=H, d=H, e=H, f=H, g=H",
+    "7: BI/RBO=H, a=H, b=H, c=H, d=L, e=L, f=L, g=L",
+    "8: BI/RBO=H, a=H, b=H, c=H, d=H, e=H, f=H, g=H",
+    "9: BI/RBO=H, a=H, b=H, c=H, d=L, e=L, f=H, g=H",
+    "10: BI/RBO=H, a=L, b=L, c=L, d=H, e=H, f=L, g=H",
+    "11: BI/RBO=H, a=L, b=L, c=H, d=H, e=L, f=L, g=H",
+    "12: BI/RBO=H, a=L, b=H, c=L, d=L, e=L, f=H, g=H",
+    "13: BI/RBO=H, a=H, b=L, c=L, d=H, e=L, f=H, g=H",
+    "14: BI/RBO=H, a=L, b=L, c=L, d=H, e=H, f=H, g=H",
+    "15: BI/RBO=H, a=L, b=L, c=L, d=L, e=L, f=L, g=L"
+  };
+
+  int resul_birbo = HIGH;
+  int resul_a[] = {HIGH,LOW,HIGH,HIGH,LOW,HIGH,LOW,HIGH,HIGH,HIGH,LOW,LOW,LOW,HIGH,LOW,LOW};
+  //int resul_b[] = {LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH};
+  //int resul_c[] = {LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
+  //int resul_d[] = {LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH};
+  //int resul_e[] = {LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH};
+  //int resul_f[] = {LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH};
+  //int resul_g[] = {LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
+
+  bool resultado = true;
+
+  digitalWrite(pinLT, HIGH);
+
+  for (int i = 0; i < 16; i++) {
+    if (i==0) { digitalWrite(pinRBI, statesRBI[0]); }
+    else { digitalWrite(pinRBI, statesRBI[1]); }
+    digitalWrite(pinA0, statesA0[i]);
+    digitalWrite(pinA1, statesA1[i]);
+    digitalWrite(pinA2, statesA2[i]);
+    digitalWrite(pinA3, statesA3[i]);
+    delay(100); // Pequeña pausa para estabilizar
+
+    int val_birbo = digitalRead(pinBIRBO);
+    int val_a = digitalRead(pin_a);
+    int val_b = digitalRead(pin_b);
+    int val_c = digitalRead(pin_c);
+    int val_d = digitalRead(pin_d);
+    int val_e = digitalRead(pin_e);
+    int val_f = digitalRead(pin_f);
+    int val_g = digitalRead(pin_g);
+    //resultado &= logicOperation(statesA4bits[i], statesB4bits[i], statesC4bits[i], statesD4bits[i]);
+    delay(20); // Espera 0.02 segundos
+    printResult(outputs4bits[i], resultado);
+  }
+  return resultado;
+}
+
 // Función para configurar los pines según el test
 void configurarPines(int test) {
   switch (test) {
@@ -173,6 +252,25 @@ void configurarPines(int test) {
       // Configuración de pines Enable
       pinMode(pins[9], OUTPUT); // LE12
       pinMode(pins[2], OUTPUT); // LE34
+      break;
+    case 12: // OR triple
+      // A, B, C, Salida
+      // Configuración de pines de la puerta 1
+      pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[5], INPUT); // 1
+      pinMode(pins[0], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[6], OUTPUT); pinMode(pins[7], INPUT); // 2
+      pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[8], INPUT); // 3
+      break;
+    case 13: // OR doble
+      // A, B, C, D, Salida
+      // Configuración de pines de la puerta 1
+      pinMode(pins[1], OUTPUT); pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], INPUT); pinMode(pins[0], INPUT); 
+      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], INPUT);
+      break;
+    case 14: // DECO 7 segmentos
+      // LT, RBI A0, A1, A2, A3
+      pinMode(pins[1], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[5], OUTPUT); pinMode(pins[13], OUTPUT); pinMode(pins[0], OUTPUT); pinMode(pins[4], OUTPUT);
+      // BI/RBO, a, b, c, d, e, f, g
+      pinMode(pins[2], INPUT); pinMode(pins[10], INPUT); pinMode(pins[9], INPUT); pinMode(pins[8], INPUT); pinMode(pins[7], INPUT); pinMode(pins[6], INPUT); pinMode(pins[12], INPUT); pinMode(pins[11], INPUT);
       break;
     default:
       // Configuración por defecto: todos los pines como INPUT
@@ -452,6 +550,27 @@ void realizarTest(int test) {
         Serial.print("74LS75 4: ERROR"); ws.textAll("74LS75 4: ERROR");
       }
       break;
+    case 12: // OR Triple
+      if (pruebasTriple(pins[2], pins[3], pins[4], pins[5], pins[0], pins[1], pins[7], pins[8], pins[10], pins[11], pins[12], pins[9], orLogic3Bits)) {
+        Serial.print("OR 3: OK"); ws.textAll("OR 3: OK");
+      } else {
+        Serial.print("OR 3: ERROR"); ws.textAll("OR 3: ERROR");
+      }
+      break;
+    case 13: // OR Doble
+      if (pruebasDoble(pins[1], pins[2], pins[3], pins[4], pins[0], pins[8], pins[9], pins[10], pins[11], pins[12], orLogic4Bits)) {
+        Serial.print("OR 2: OK"); ws.textAll("OR 2: OK");
+      } else {
+        Serial.print("OR 2: ERROR"); ws.textAll("OR 2: ERROR");
+      }
+      break;
+    case 14: // DECO 7 segmentos
+      if (pruebasDoble(pins[1], pins[3], pins[5], pins[13], pins[0], pins[4], pins[2], pins[10], pins[9], pins[8], pins[7], pins[6], pins[12], pins[11])) {
+        Serial.print("DECO 7 SEG: OK"); ws.textAll("DECO 7 SEG: OK");
+      } else {
+        Serial.print("DECO 7 SEG: ERROR"); ws.textAll("DECO 7 SEG: ERROR");
+      }
+      break;
   }
 }
 
@@ -651,10 +770,16 @@ void setup() {
                 <h2>74LS75</h2>
               </div>
               <div class="test-card" onclick="selectTest(13)">
-                <h2>74LS48</h2>
+                <h2>74HC4075</h2>
               </div>
               <div class="test-card" onclick="selectTest(14)">
-                <h2>FATLA...</h2>
+                <h2>74HC4072</h2>
+              </div>
+              <div class="test-card" onclick="selectTest(15)">
+                <h2>74LS48</h2>
+              </div>
+              <div class="test-card" onclick="selectTest(0)">
+                <h2>FALTA...</h2>
               </div>
             </div>
           </div>
