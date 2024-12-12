@@ -11,8 +11,8 @@ const int numTests = 15; // Número de pruebas (AND, OR, etc.)
 const char* testNames[numTests] = {"74HC08", "74HC32", "74HC00", "74HC86", "74HC02", "74HC04", "74HC10", "74HC11", "74HC27", "74HC20", "74HC21", "74LS75", "74HC4075", "74HC4072", "74LS48"};
 
 // Configura el nombre y la contraseña de tu red WiFi
-const char* ssid = "###";
-const char* password = "###";
+const char* ssid = "clifford";
+const char* password = "cliff4yyyy";
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -177,7 +177,7 @@ bool pruebasDeco7Seg(int pinLT, int pinRBI, int pinA0, int pinA1, int pinA2, int
     digitalWrite(pinA1, statesA1[i]);
     digitalWrite(pinA2, statesA2[i]);
     digitalWrite(pinA3, statesA3[i]);
-    delay(100); // Pequeña pausa para estabilizar
+    delay(1000); // Pequeña pausa para estabilizar
 
     int val_birbo = digitalRead(pinBIRBO);
     int val_a = digitalRead(pin_a);
@@ -188,7 +188,7 @@ bool pruebasDeco7Seg(int pinLT, int pinRBI, int pinA0, int pinA1, int pinA2, int
     int val_f = digitalRead(pin_f);
     int val_g = digitalRead(pin_g);
     //resultado &= logicOperation(statesA4bits[i], statesB4bits[i], statesC4bits[i], statesD4bits[i]);
-    delay(20); // Espera 0.02 segundos
+    delay(200); // Espera 0.02 segundos
     printResult(outputs4bits[i], resultado);
   }
   return resultado;
@@ -205,14 +205,14 @@ void configurarPines(int test) {
       pinMode(pins[0], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[2], INPUT);
       pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[5], INPUT);
       pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[6], INPUT);
-      pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[9], INPUT);
+      pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[9], INPUT); pinMode(pins[12], OUTPUT);
       break;
     case 4: // NOR cuadruple
       // Configuración de pines de la puerta 1
       pinMode(pins[2], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[0], INPUT);
       pinMode(pins[5], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[3], INPUT);
       pinMode(pins[6], OUTPUT); pinMode(pins[7], OUTPUT); pinMode(pins[8], INPUT);
-      pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], INPUT);
+      pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], INPUT); pinMode(pins[12], OUTPUT);
       break;
     case 5: // NOT sixtuple
       // Configuración de pines de la puerta 1
@@ -223,7 +223,7 @@ void configurarPines(int test) {
       // Configuración de pines de la puerta 3
       pinMode(pins[6], INPUT); pinMode(pins[7], OUTPUT);
       pinMode(pins[8], INPUT); pinMode(pins[9], OUTPUT);
-      pinMode(pins[10], INPUT); pinMode(pins[11], OUTPUT);
+      pinMode(pins[10], INPUT); pinMode(pins[11], OUTPUT); pinMode(pins[12], OUTPUT);
       break;
     case 6: // NAND triple
     case 7: // AND triple
@@ -232,14 +232,14 @@ void configurarPines(int test) {
       // Configuración de pines de la puerta 1
       pinMode(pins[0], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[10], INPUT);
       pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[5], INPUT);
-      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[9], OUTPUT); pinMode(pins[6], INPUT);
+      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[9], OUTPUT); pinMode(pins[6], INPUT); pinMode(pins[12], OUTPUT);
       break;
     case 9: // NAND doble
     case 10: // AND doble
       // A, B, C, D, Salida
       // Configuración de pines de la puerta 1
       pinMode(pins[0], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[5], INPUT);
-      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[6], INPUT);
+      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[6], INPUT); pinMode(pins[12], OUTPUT);
       break;
     case 11: // Quad bistable transparent latch
       // 1D, 1Qn, 1Q
@@ -259,12 +259,13 @@ void configurarPines(int test) {
       pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[5], INPUT); // 1
       pinMode(pins[0], OUTPUT); pinMode(pins[1], OUTPUT); pinMode(pins[6], OUTPUT); pinMode(pins[7], INPUT); // 2
       pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], OUTPUT); pinMode(pins[8], INPUT); // 3
+      pinMode(pins[12], OUTPUT);
       break;
     case 13: // OR doble
       // A, B, C, D, Salida
       // Configuración de pines de la puerta 1
-      pinMode(pins[1], OUTPUT); pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], INPUT); pinMode(pins[0], INPUT); 
-      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], INPUT);
+      pinMode(pins[1], OUTPUT); pinMode(pins[2], OUTPUT); pinMode(pins[3], OUTPUT); pinMode(pins[4], OUTPUT); pinMode(pins[0], INPUT); 
+      pinMode(pins[7], OUTPUT); pinMode(pins[8], OUTPUT); pinMode(pins[9], OUTPUT); pinMode(pins[10], OUTPUT); pinMode(pins[11], INPUT);  pinMode(pins[12], OUTPUT);
       break;
     case 14: // DECO 7 segmentos
       // LT, RBI A0, A1, A2, A3
@@ -328,7 +329,7 @@ bool checkLogicGate4Bits(int pinA, int pinB, int pinC, int pinD, int pinSalida, 
     delay(100); // Pequeña pausa para estabilizar
 
     int val = digitalRead(pinSalida);
-    resultado &= logicOperation(statesA4bits[i], statesB4bits[i], statesC4bits[i], statesD4bits[i]);
+    resultado &= logicOperation(statesA4bits[i], statesB4bits[i], statesC4bits[i], statesD4bits[i]) == val;
     delay(20); // Espera 0.02 segundos
     printResult(messages4bits[i], resultado);
   }
@@ -464,6 +465,7 @@ bool pruebasSixtuple(int pinA1, int pinSalida1,
 void realizarTest(int test) {
   switch (test) {
     case 0: // AND
+      digitalWrite(pins[12], HIGH);
       if (pruebasCuadriple(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[6], pins[10], pins[11], pins[9], andLogic2Bits)) {
         Serial.print("AND 4: OK"); ws.textAll("AND 4: OK");
       } else {
@@ -471,6 +473,7 @@ void realizarTest(int test) {
       }
       break;
     case 1: // OR
+      digitalWrite(pins[12], HIGH);
       if (pruebasCuadriple(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[6], pins[10], pins[11], pins[9], orLogic2Bits)) {
         Serial.print("OR 4: OK"); ws.textAll("OR 4: OK");
       } else {
@@ -478,6 +481,7 @@ void realizarTest(int test) {
       }
       break;
     case 2: // NAND
+      digitalWrite(pins[12], HIGH);
       if (pruebasCuadriple(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[6], pins[10], pins[11], pins[9], nandLogic2Bits)) {
         Serial.print("NAND 4: OK"); ws.textAll("NAND 4: OK");
       } else {
@@ -485,6 +489,7 @@ void realizarTest(int test) {
       }
       break;
     case 3: // XOR
+      digitalWrite(pins[12], HIGH);
       if (pruebasCuadriple(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[6], pins[10], pins[11], pins[9], xorLogic2Bits)) {
         Serial.print("XOR 4: OK"); ws.textAll("XOR 4: OK");
       } else {
@@ -492,6 +497,7 @@ void realizarTest(int test) {
       }
       break;
     case 4: // NOR
+      digitalWrite(pins[12], HIGH);
       if (pruebasCuadriple(pins[2], pins[1], pins[0], pins[5], pins[4], pins[3], pins[6], pins[7], pins[8], pins[9], pins[10], pins[11], norLogic2Bits)) {
         Serial.print("NOR 4: OK"); ws.textAll("NOR 4: OK");
       } else {
@@ -499,6 +505,7 @@ void realizarTest(int test) {
       }
       break;
     case 5: // NOT sixtuple
+      digitalWrite(pins[12], HIGH);
       if (pruebasSixtuple(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[7], pins[6], pins[9], pins[8], pins[11], pins[10], notLogic1Bit)) {
         Serial.print("NOT 6: OK"); ws.textAll("NOT 6: OK");
       } else {
@@ -506,6 +513,7 @@ void realizarTest(int test) {
       }
       break;
     case 6: // NAND triple
+      digitalWrite(pins[12], HIGH);
       if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], nandLogic3Bits)) {
         Serial.print("NAND 3: OK"); ws.textAll("NAND 3: OK");
       } else {
@@ -513,6 +521,7 @@ void realizarTest(int test) {
       }
       break;
     case 7: // AND triple
+      digitalWrite(pins[12], HIGH);
       if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], andLogic3Bits)) {
         Serial.print("AND 3: OK"); ws.textAll("AND 3: OK");
       } else {
@@ -520,6 +529,7 @@ void realizarTest(int test) {
       }
       break;
     case 8: // NOR triple
+      digitalWrite(pins[12], HIGH);
       if (pruebasTriple(pins[0], pins[1], pins[11], pins[10], pins[2], pins[3], pins[4], pins[5], pins[7], pins[8], pins[9], pins[6], norLogic3Bits)) {
         Serial.print("NOR 3: OK"); ws.textAll("NOR 2: OK");
       } else {
@@ -527,6 +537,7 @@ void realizarTest(int test) {
       }
       break;
     case 9: // NAND Doble
+      digitalWrite(pins[12], HIGH);
       if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], nandLogic4Bits)) {
         Serial.print("NAND 2: OK"); ws.textAll("NAND 2: OK");
       } else {
@@ -534,6 +545,7 @@ void realizarTest(int test) {
       }
       break;
     case 10: // AND Doble
+      digitalWrite(pins[12], HIGH);
       if (pruebasDoble(pins[0], pins[1], pins[3], pins[4], pins[5], pins[7], pins[8], pins[10], pins[11], pins[6], andLogic4Bits)) {
         Serial.print("AND 2: OK"); ws.textAll("AND 2: OK");
       } else {
@@ -551,21 +563,23 @@ void realizarTest(int test) {
       }
       break;
     case 12: // OR Triple
-      if (pruebasTriple(pins[2], pins[3], pins[4], pins[5], pins[0], pins[1], pins[7], pins[8], pins[10], pins[11], pins[12], pins[9], orLogic3Bits)) {
+      digitalWrite(pins[12], HIGH);
+      if (pruebasTriple(pins[2], pins[3], pins[4], pins[5], pins[0], pins[1], pins[6], pins[7], pins[9], pins[10], pins[11], pins[8], orLogic3Bits)) {
         Serial.print("OR 3: OK"); ws.textAll("OR 3: OK");
       } else {
         Serial.print("OR 3: ERROR"); ws.textAll("OR 3: ERROR");
       }
       break;
     case 13: // OR Doble
-      if (pruebasDoble(pins[1], pins[2], pins[3], pins[4], pins[0], pins[8], pins[9], pins[10], pins[11], pins[12], orLogic4Bits)) {
+      digitalWrite(pins[12], HIGH);
+      if (pruebasDoble(pins[1], pins[2], pins[3], pins[4], pins[0], pins[7], pins[8], pins[9], pins[10], pins[11], orLogic4Bits)) {
         Serial.print("OR 2: OK"); ws.textAll("OR 2: OK");
       } else {
         Serial.print("OR 2: ERROR"); ws.textAll("OR 2: ERROR");
       }
       break;
     case 14: // DECO 7 segmentos
-      if (pruebasDoble(pins[1], pins[3], pins[5], pins[13], pins[0], pins[4], pins[2], pins[10], pins[9], pins[8], pins[7], pins[6], pins[12], pins[11])) {
+      if (pruebasDeco7Seg(pins[1], pins[3], pins[5], pins[13], pins[0], pins[4], pins[2], pins[10], pins[9], pins[8], pins[7], pins[6], pins[12], pins[11])) {
         Serial.print("DECO 7 SEG: OK"); ws.textAll("DECO 7 SEG: OK");
       } else {
         Serial.print("DECO 7 SEG: ERROR"); ws.textAll("DECO 7 SEG: ERROR");
@@ -596,7 +610,7 @@ void setup() {
   unsigned long startAttemptTime = millis();
   const unsigned long wifiTimeout = 10000; // 10 segundos de espera máxima
   while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < wifiTimeout) {
-    delay(1000);
+    delay(2000);
     Serial.println("Conectando a WiFi...");
   }
   if (WiFi.status() == WL_CONNECTED) {
